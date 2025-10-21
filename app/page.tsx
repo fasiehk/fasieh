@@ -1,5 +1,26 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import ContactForm from "./components/ContactForm";
+
+// Favicon & PWA metadata (paste your generated links/paths)
+export const metadata: Metadata = {
+  title: "Hafiz M Fasieh",
+  icons: {
+    icon: [
+      // Browser tab icons
+      { url: "https://i.postimg.cc/jSZ3qMVM/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "https://i.postimg.cc/jSZ3qMVM/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "https://i.postimg.cc/jSZ3qMVM/favicon.ico" },
+    ],
+    // iOS home screen icon
+    apple: [{ url: "https://i.postimg.cc/jSZ3qMVM/favicon-32x32.png", sizes: "180x180", type: "image/png" }],
+    // Optional extras (remove if you don't have them)
+    shortcut: ["PASTE_FAVICON_ICO"],
+    other: [{ rel: "mask-icon", url: "PASTE_SAFARI_PINNED_TAB_SVG", color: "#5bbad5" }],
+  },
+  manifest: "PASTE_SITE_WEBMANIFEST_URL", // optional; remove if not used
+  themeColor: "#ffffff",
+};
 
 export default function Page() {
   const year = new Date().getFullYear();
@@ -28,12 +49,14 @@ export default function Page() {
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-sm transition-shadow">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-sm">
-              {/* simple logo dot */}
-              <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
-                <circle cx="12" cy="12" r="6" fill="currentColor" />
-              </svg>
-            </span>
+            {/* Replace the SVG badge with your picture (square image recommended) */}
+            <img
+              src="https://i.postimg.cc/jSZ3qMVM/favicon-32x32.png"
+              alt="Hafiz M Fasieh"
+              className="h-8 w-8 rounded-md object-cover ring-1 ring-gray-200 shadow-sm"
+              width={32}
+              height={32}
+            />
             <span className="text-sm font-semibold tracking-tight">Hafiz M Fasieh</span>
           </Link>
           <nav className="flex items-center gap-1">
