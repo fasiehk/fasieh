@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ContactForm from "./components/ContactForm";
 
 export default function Page() {
   const year = new Date().getFullYear();
@@ -290,7 +291,7 @@ export default function Page() {
             <div className={`${card} ${cardBevel}`}>
               <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]">
                 <img 
-                  src="https://i.postimg.cc/NjHLBt3n/Untitled-design-2.png" 
+                  src="https://i.postimg.cc/NjHLBt3n/Untitled-design-2.png"
                   alt="Smart Library App"
                   className="h-full w-full object-cover"
                 />
@@ -722,44 +723,8 @@ export default function Page() {
             </div>
 
             {/* Simple email form without backend */}
-            <form
-              className={card}
-              action="mailto:fasiehk@proton.me"
-              method="post"
-              encType="text/plain"
-            >
-              <h3 className={cardTitle}>Send a Message</h3>
-              <div className="mt-3 grid gap-3">
-                <label className="sr-only" htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Your name"
-                  required
-                  className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-xs focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
-                />
-                <label className="sr-only" htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  required
-                  className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-xs focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
-                />
-                <label className="sr-only" htmlFor="message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  placeholder="Your message..."
-                  required
-                  className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-xs focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
-                />
-                <button type="submit" className={ctaPrimary}>Send</button>
-              </div>
-            </form>
+            {/* Replace the mailto form with the API-backed form */}
+            <ContactForm card={card} cardTitle={cardTitle} ctaPrimary={ctaPrimary} />
           </div>
         </section>
       </main>
