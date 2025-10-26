@@ -22,23 +22,31 @@ export const metadata: Metadata = {
   themeColor: "#ffffff",
 };
 
+// Ensure proper scaling on mobile devices
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 export default function Page() {
   const year = new Date().getFullYear();
 
   // Refined, light-only design tokens with professional spacing and micro-interactions.
   const navLink =
-    "inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 hover:text-gray-900 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500";
+    "inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 hover:text-gray-900 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 min-h-[44px]";
   const ctaPrimary =
-    "inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-transform duration-150 hover:bg-indigo-500 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500";
+    "inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-transform duration-150 hover:bg-indigo-500 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 min-h-[44px] touch-manipulation";
   const ctaSecondary =
-    "inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-xs transition-colors duration-200 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500";
+    "inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-xs transition-colors duration-200 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 min-h-[44px] touch-manipulation";
   // Refined card shapes
   const card =
-    "group relative rounded-[24px] border border-gray-200 bg-white p-5 shadow-sm ring-1 ring-gray-100 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:ring-gray-200 before:pointer-events-none before:absolute before:inset-0 before:rounded-[24px] before:content-[''] before:shadow-[inset_0_0_0_1px_rgba(17,24,39,0.04)]";
-  const cardTitle = "mb-1 text-base font-semibold text-gray-900";
+    "group relative rounded-[24px] border border-gray-200 bg-white p-4 sm:p-5 shadow-sm ring-1 ring-gray-100 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:ring-gray-200 before:pointer-events-none before:absolute before:inset-0 before:rounded-[24px] before:content-[''] before:shadow-[inset_0_0_0_1px_rgba(17,24,39,0.04)]";
+  const cardTitle = "mb-1 text-base sm:text-base font-semibold text-gray-900";
   const cardText = "text-sm leading-6 text-gray-600";
   const pill =
-    "inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-700 mr-1.5";
+    "inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-700 mr-1.5 mb-1.5";
   // New beveled variant
   const cardBevel =
     "rounded-none [clip-path:polygon(16px_0,calc(100%-16px)_0,100%_16px,100%_calc(100%-16px),calc(100%-16px)_100%,16px_100%,0_calc(100%-16px),0_16px)]";
@@ -48,18 +56,20 @@ export default function Page() {
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-sm transition-shadow">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 min-h-[44px]">
             {/* Replace the SVG badge with your picture (square image recommended) */}
             <img
               src="https://i.postimg.cc/jSZ3qMVM/favicon-32x32.png"
               alt="Hafiz M Fasieh"
-              className="h-8 w-8 rounded-md object-cover ring-1 ring-gray-200 shadow-sm"
+              className="h-7 w-7 sm:h-8 sm:w-8 rounded-md object-cover ring-1 ring-gray-200 shadow-sm flex-shrink-0"
               width={32}
               height={32}
             />
-            <span className="text-sm font-semibold tracking-tight">Hafiz M Fasieh</span>
+            <span className="text-xs sm:text-sm font-semibold tracking-tight truncate">Hafiz M Fasieh</span>
           </Link>
-          <nav className="flex items-center gap-1">
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
             <a href="#home" className={navLink}>Home</a>
             <a href="#about" className={navLink}>About</a>
             <a href="#projects" className={navLink}>Projects</a>
@@ -67,6 +77,30 @@ export default function Page() {
             <a href="#skills" className={navLink}>Skills</a>
             <a href="#contact" className={navLink}>Contact</a>
           </nav>
+
+          {/* Mobile menu */}
+          <div className="md:hidden">
+            <details className="relative">
+              <summary
+                aria-label="Toggle navigation"
+                className="inline-flex items-center rounded-md px-2.5 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 [&::-webkit-details-marker]:hidden min-h-[44px] touch-manipulation"
+              >
+                <svg viewBox="0 0 24 24" className="h-6 w-6 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+              </summary>
+              <div className="absolute right-0 mt-2 w-56 rounded-lg border border-gray-200 bg-white shadow-lg ring-1 ring-gray-100 overflow-hidden">
+                <div className="p-2">
+                  <a href="#home" className="block rounded-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors min-h-[44px] flex items-center touch-manipulation">Home</a>
+                  <a href="#about" className="block rounded-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors min-h-[44px] flex items-center touch-manipulation">About</a>
+                  <a href="#projects" className="block rounded-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors min-h-[44px] flex items-center touch-manipulation">Projects</a>
+                  <a href="#experience" className="block rounded-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors min-h-[44px] flex items-center touch-manipulation">Experience</a>
+                  <a href="#skills" className="block rounded-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors min-h-[44px] flex items-center touch-manipulation">Skills</a>
+                  <a href="#contact" className="block rounded-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors min-h-[44px] flex items-center touch-manipulation">Contact</a>
+                </div>
+              </div>
+            </details>
+          </div>
         </div>
       </header>
 
@@ -75,7 +109,7 @@ export default function Page() {
         {/* Home */}
         <section
           id="home"
-          className="relative mx-auto max-w-7xl px-4 py-16 sm:py-24 sm:px-6 scroll-mt-24 overflow-hidden isolate"
+          className="relative mx-auto max-w-7xl px-4 py-12 sm:py-16 md:py-24 sm:px-6 scroll-mt-16 overflow-hidden isolate"
         >
           {/* Animated background */}
           <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
@@ -96,29 +130,29 @@ export default function Page() {
           </div>
 
           <div className="grid items-center gap-8 md:grid-cols-2">
-            <div>
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+            <div className="order-2 md:order-1">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
                 <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
                   Hafiz M Fasieh — Full‑Stack & Mobile Developer
                 </span>
               </h1>
-              <p className="mt-4 max-w-xl text-lg text-gray-700">
+              <p className="mt-4 max-w-xl text-base sm:text-lg text-gray-700 leading-relaxed">
                 Building modern web and mobile experiences. Passionate about performance,
                 accessibility, and delightful UX.
               </p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="mt-6 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
                 <a href="#projects" className={ctaPrimary}>View My Work</a>
                 <a href="#contact" className={ctaSecondary}>Contact Me</a>
               </div>
             </div>
-            <div className="flex justify-center md:justify-end">
+            <div className="flex justify-center md:justify-end order-1 md:order-2">
               {/* Subtle gradient accent behind avatar for depth */}
               <div className="relative">
-                <div aria-hidden className="pointer-events-none absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-tr from-indigo-100 via-white to-fuchsia-100 blur-xl" />
+                <div aria-hidden className="pointer-events-none absolute -inset-4 sm:-inset-6 -z-10 rounded-3xl bg-gradient-to-tr from-indigo-100 via-white to-fuchsia-100 blur-xl" />
                 <img
                   src="https://i.postimg.cc/65F8BpWT/1758704032760.jpg"
                   alt="Hafiz M Fasieh"
-                  className="h-100 w-100 rounded-2xl object-cover ring-1 ring-gray-200 shadow-md"
+                  className="w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 rounded-2xl object-cover ring-1 ring-gray-200 shadow-md"
                 />
               </div>
             </div>
@@ -246,15 +280,15 @@ export default function Page() {
         {/* About */}
         <section
           id="about"
-          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-24"
+          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-2xl font-bold">About Me</h2>
-          <p className="mt-3 max-w-3xl text-gray-700">
-            I’m a full‑stack and mobile developer focused on crafting reliable, scalable,
+          <h2 className="text-xl sm:text-2xl font-bold">About Me</h2>
+          <p className="mt-3 max-w-3xl text-sm sm:text-base text-gray-700 leading-relaxed">
+            I&#39;m a full‑stack and mobile developer focused on crafting reliable, scalable,
             and well‑designed products. I enjoy shipping end‑to‑end features, from clean
             APIs to polished UIs.
           </p>
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <div className="mt-6 grid gap-4 sm:gap-6 md:grid-cols-2">
             <div className={card}>
               <h3 className={cardTitle}>Education</h3>
               <div className="space-y-3">
@@ -281,7 +315,7 @@ export default function Page() {
           {/* Tools & Tech */}
           <div className="mt-8">
             <h3 className="text-base font-semibold">Tools & Technologies</h3>
-            <div className="mt-3 flex flex-wrap">
+            <div className="mt-3 flex flex-wrap -mr-1.5">
               <span className={pill}>Next.js</span>
               <span className={pill}>React</span>
               <span className={pill}>Flutter</span>
@@ -294,7 +328,7 @@ export default function Page() {
               <span className={pill}>Git</span>
             </div>
             <div className="mt-4">
-              <a href="/resume.pdf" className={ctaSecondary}>Download Resume (PDF)</a>
+              <a href="/resume.pdf" className={`${ctaSecondary} w-full sm:w-auto`}>Download Resume (PDF)</a>
             </div>
           </div>
         </section>
@@ -302,121 +336,104 @@ export default function Page() {
         {/* Projects */}
         <section
           id="projects"
-          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-24"
+          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <div className="mb-6 flex items-end justify-between">
-            <h2 className="text-2xl font-bold">Projects</h2>
-            <span className="text-sm text-gray-500">Featured work</span>
+          <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2">
+            <h2 className="text-xl sm:text-2xl font-bold">Projects</h2>
+            <span className="text-xs sm:text-sm text-gray-500">Featured work</span>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {/* Mobile App Developer — Smart Library */}
             <div className={`${card} ${cardBevel}`}>
-              <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]">
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]">
                 <img 
                   src="https://i.postimg.cc/NjHLBt3n/Untitled-design-2.png"
-                  alt="Smart Library App"
+                  alt="Smart Library"
                   className="h-full w-full object-cover"
+                  loading="lazy"
                 />
               </div>
               <h3 className={`${cardTitle} mt-4`}>Mobile App Developer — Smart Library</h3>
               <p className={cardText}>Flutter app for exploring and saving books with a calm, elegant UI.</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+              <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
                 <li>OpenLibrary API integration for dynamic book data</li>
                 <li>Auth and cloud storage via Firebase</li>
                 <li>Re-engineered backend with Supabase (hybrid local + API)</li>
               </ul>
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap -mr-1.5">
                 <span className={pill}>Flutter</span>
                 <span className={pill}>Firebase</span>
                 <span className={pill}>OpenLibrary API</span>
                 <span className={pill}>Supabase</span>
               </div>
               <div className="mt-3 flex gap-2">
-                <a href="https://github.com/fasiehk/projectMADfinal.git" target="_blank" rel="noopener noreferrer" className={ctaPrimary}>GitHub</a>
-              </div>
-            </div>
-
-            {/* Backend Developer — Smart Library Admin Panel */}
-            <div className={card}>
-              <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
-              <h3 className={`${cardTitle} mt-4`}>Backend Developer — Smart Library Admin Panel</h3>
-              <p className={cardText}>Admin dashboard for managing books and real-time updates.</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
-                <li>Supabase Auth (email/password + Google)</li>
-                <li>Real-time admin data updates</li>
-                <li>Streamlined content workflows</li>
-              </ul>
-              <div className="mt-2">
-                <span className={pill}>Flutter Web</span>
-                <span className={pill}>Supabase</span>
-              </div>
-              <div className="mt-3 flex gap-2">
-                <a href="#" target="_blank" rel="noopener noreferrer" className={ctaPrimary}>GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className={`${ctaPrimary} flex-1 justify-center`}>GitHub</a>
               </div>
             </div>
 
             {/* Mobile Developer — Flutter Chat App */}
             <div className={`${card} ${cardBevel}`}>
-              <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
               <h3 className={`${cardTitle} mt-4`}>Mobile Developer — Flutter Chat App</h3>
               <p className={cardText}>Real-time chat with clean, minimal UI and one-on-one messaging.</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+              <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
                 <li>Firebase Auth sign-in</li>
                 <li>Firestore for instant updates</li>
                 <li>StreamBuilder & state management for live states</li>
               </ul>
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap -mr-1.5">
                 <span className={pill}>Flutter</span>
                 <span className={pill}>Firebase Auth</span>
                 <span className={pill}>Firestore</span>
               </div>
               <div className="mt-3 flex gap-2">
-                <a href="#" target="_blank" rel="noopener noreferrer" className={ctaPrimary}>GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className={`${ctaPrimary} flex-1 justify-center`}>GitHub</a>
               </div>
             </div>
 
             {/* Python Developer — URL Link Shortener */}
             <div className={card}>
-              <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
               <h3 className={`${cardTitle} mt-4`}>Python Developer — URL Link Shortener</h3>
               <p className={cardText}>Flask-based URL shortening service with custom short codes and analytics.</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+              <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
                 <li>RESTful API for link creation and redirection</li>
                 <li>Custom short code generation and validation</li>
                 <li>Click tracking and basic analytics</li>
                 <li>SQLite database for persistent storage</li>
               </ul>
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap -mr-1.5">
                 <span className={pill}>Flask</span>
                 <span className={pill}>Python</span>
                 <span className={pill}>SQLite</span>
                 <span className={pill}>REST API</span>
               </div>
               <div className="mt-3 flex gap-2">
-                <a href="#" target="_blank" rel="noopener noreferrer" className={ctaPrimary}>GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className={`${ctaPrimary} flex-1 justify-center`}>GitHub</a>
               </div>
             </div>
 
             {/* Full-Stack Developer — Online Course Platform */}
             <div className={card}>
-              <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]">
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]">
                 <img 
                   src="https://i.postimg.cc/CLtRf7bx/Screenshot-2025-10-15-124324.png" 
                   alt="Online Course Platform"
                   className="h-full w-full object-cover"
+                  loading="lazy"
                 />
               </div>
               <h3 className={`${cardTitle} mt-4`}>Full-Stack Developer — Online Course Platform</h3>
               <p className={cardText}>Next.js + Prisma + PostgreSQL + JWT. Scalable LMS with role-based auth.</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+              <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
                 <li>Role-based auth with JWT and refresh tokens</li>
                 <li>Secure REST APIs for students and admins</li>
                 <li>Dashboard for course management and enrollments</li>
                 <li>Reusable UI with Tailwind components</li>
                 <li>Prisma schema optimized for performance</li>
               </ul>
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap -mr-1.5">
                 <span className={pill}>Next.js</span>
                 <span className={pill}>TypeScript</span>
                 <span className={pill}>Tailwind</span>
@@ -425,44 +442,44 @@ export default function Page() {
                 <span className={pill}>JWT</span>
               </div>
               <div className="mt-3 flex gap-2">
-                <a href="#" target="_blank" rel="noopener noreferrer" className={ctaPrimary}>GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className={`${ctaPrimary} flex-1 justify-center`}>GitHub</a>
               </div>
             </div>
 
             {/* Java Developer — Crypto Trading Console App */}
             <div className={card}>
-              <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
               <h3 className={`${cardTitle} mt-4`}>Java Developer — Crypto Trading Console App</h3>
               <p className={cardText}>OOP-focused trading simulation demonstrating solid design.</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+              <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
                 <li>Encapsulation, Inheritance, Polymorphism</li>
                 <li>Classes for User, Wallet, Trade with abstraction</li>
               </ul>
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap -mr-1.5">
                 <span className={pill}>Java</span>
                 <span className={pill}>OOP</span>
               </div>
               <div className="mt-3 flex gap-2">
-                <a href="#" target="_blank" rel="noopener noreferrer" className={ctaPrimary}>GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className={`${ctaPrimary} flex-1 justify-center`}>GitHub</a>
               </div>
             </div>
 
             {/* Frontend Developer — Portfolio & Personal Projects */}
             <div className={`${card} ${cardBevel}`}>
-              <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
               <h3 className={`${cardTitle} mt-4`}>Frontend Developer — Portfolio & Personal Projects</h3>
               <p className={cardText}>Polished portfolio with smooth scroll animations and reusable components.</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+              <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
                 <li>Clean component structure for scalability</li>
                 <li>Interactive hover and scroll effects</li>
               </ul>
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap -mr-1.5">
                 <span className={pill}>Next.js</span>
                 <span className={pill}>Tailwind</span>
               </div>
-              <div className="mt-3 flex gap-2">
-                <a href="#" target="_blank" rel="noopener noreferrer" className={ctaSecondary}>Live Site</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" className={ctaPrimary}>GitHub</a>
+              <div className="mt-3 flex flex-col sm:flex-row gap-2">
+                <a href="#" target="_blank" rel="noopener noreferrer" className={`${ctaSecondary} flex-1 justify-center`}>Live Site</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className={`${ctaPrimary} flex-1 justify-center`}>GitHub</a>
               </div>
             </div>
           </div>
@@ -471,32 +488,32 @@ export default function Page() {
         {/* Experience / Agency */}
         <section
           id="experience"
-          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-24"
+          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-2xl font-bold">Experience / Agency</h2>
+          <h2 className="text-xl sm:text-2xl font-bold">Experience / Agency</h2>
 
           <div className={`${card} mt-4`}>
             <h3 className={cardTitle}>Founder & Lead Developer — CubixByte</h3>
             <p className={cardText}>Web & App Development Solutions</p>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+            <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
               <li>Managed client projects, technical development, and product design</li>
               <li>WhatsApp marketing for Urdu-speaking communities</li>
               <li>Delivered scalable software for small businesses and startups</li>
             </ul>
-            <div className="mt-3">
+            <div className="mt-3 flex flex-wrap -mr-1.5">
               <span className={pill}>Web Apps</span>
               <span className={pill}>Mobile Apps</span>
               <span className={pill}>Databases</span>
               <span className={pill}>Management Systems</span>
             </div>
             <div className="mt-4">
-              <a href="#contact" className={ctaPrimary}>Get a Quote</a>
+              <a href="#contact" className={`${ctaPrimary} w-full sm:w-auto`}>Get a Quote</a>
             </div>
           </div>
 
           <div className={`${card} mt-4`}>
             <h3 className={cardTitle}>Additional Academic Projects</h3>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-600">
+            <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
               <li>Flask mini projects: routing, forms, and API handling</li>
               <li>Python data analysis: cleaning and visualization with Pandas & NumPy</li>
             </ul>
@@ -506,21 +523,24 @@ export default function Page() {
         {/* Skills */}
         <section
           id="skills"
-          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-24"
+          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-2xl font-bold mb-6">Skills & Expertise</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-6">Skills & Expertise</h2>
           
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-5 lg:grid-cols-3">
             {/* Frontend Development */}
-            <div className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-white p-6">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="rounded-lg bg-indigo-100 p-2">
+            <div className="rounded-xl sm:rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-white p-4 sm:p-6">
+              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                <div className="rounded-lg bg-indigo-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">Frontend Development</h3>
-                <span className="ml-auto text-xs font-medium text-indigo-600">8 Projects • 2+ years</span>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900">Frontend Development</h3>
+                  <span className="block sm:hidden text-xs font-medium text-indigo-600 mt-0.5">8 Projects • 2+ years</span>
+                </div>
+                <span className="hidden sm:inline text-xs font-medium text-indigo-600 whitespace-nowrap">8 Projects • 2+ years</span>
               </div>
               <div className="space-y-3">
                 <div>
@@ -563,15 +583,18 @@ export default function Page() {
             </div>
 
             {/* Mobile Development */}
-            <div className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50/50 to-white p-6">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="rounded-lg bg-emerald-100 p-2">
+            <div className="rounded-xl sm:rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50/50 to-white p-4 sm:p-6">
+              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                <div className="rounded-lg bg-emerald-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">Mobile Development</h3>
-                <span className="ml-auto text-xs font-medium text-emerald-600">6 Projects • 1.5+ years</span>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900">Mobile Development</h3>
+                  <span className="block sm:hidden text-xs font-medium text-emerald-600 mt-0.5">6 Projects • 1.5+ years</span>
+                </div>
+                <span className="hidden sm:inline text-xs font-medium text-emerald-600 whitespace-nowrap">6 Projects • 1.5+ years</span>
               </div>
               <div className="space-y-3">
                 <div>
@@ -605,15 +628,18 @@ export default function Page() {
             </div>
 
             {/* Backend & Database */}
-            <div className="rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50/50 to-white p-6">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="rounded-lg bg-violet-100 p-2">
+            <div className="rounded-xl sm:rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50/50 to-white p-4 sm:p-6">
+              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                <div className="rounded-lg bg-violet-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">Backend & Database</h3>
-                <span className="ml-auto text-xs font-medium text-violet-600">10 Projects • 2+ years</span>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900">Backend & Database</h3>
+                  <span className="block sm:hidden text-xs font-medium text-violet-600 mt-0.5">10 Projects • 2+ years</span>
+                </div>
+                <span className="hidden sm:inline text-xs font-medium text-violet-600 whitespace-nowrap">10 Projects • 2+ years</span>
               </div>
               <div className="space-y-3">
                 <div>
@@ -656,17 +682,20 @@ export default function Page() {
             </div>
 
             {/* Tools & Collaboration - spans full width on its own row */}
-            <div className="rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/50 to-white p-6 lg:col-span-3">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="rounded-lg bg-amber-100 p-2">
+            <div className="rounded-xl sm:rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/50 to-white p-4 sm:p-6 lg:col-span-3">
+              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                <div className="rounded-lg bg-amber-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">Tools & Collaboration</h3>
-                <span className="ml-auto text-xs font-medium text-amber-600">Essential skills</span>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900">Tools & Collaboration</h3>
+                  <span className="block sm:hidden text-xs font-medium text-amber-600 mt-0.5">Essential skills</span>
+                </div>
+                <span className="hidden sm:inline text-xs font-medium text-amber-600 whitespace-nowrap">Essential skills</span>
               </div>
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
                   <div className="h-2 w-2 rounded-full bg-amber-500" />
                   <span className="text-sm font-medium text-gray-700">Git / GitHub</span>
@@ -691,10 +720,10 @@ export default function Page() {
         {/* Certifications */}
         <section
           id="certifications"
-          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-24"
+          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-2xl font-bold">Certifications</h2>
-          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+          <h2 className="text-xl sm:text-2xl font-bold">Certifications</h2>
+          <div className="mt-4 grid gap-4 sm:gap-5 sm:grid-cols-2">
             <div className={card}>
               <h3 className={cardTitle}>SQL Fundamentals Certificate</h3>
               <p className={cardText}>SoloLearn</p>
@@ -708,18 +737,18 @@ export default function Page() {
         {/* Contact */}
         <section
           id="contact"
-          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-24"
+          className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-2xl font-bold">Contact</h2>
-          <p className="mt-2 text-gray-700">
-            Let’s build something together.
+          <h2 className="text-xl sm:text-2xl font-bold">Contact</h2>
+          <p className="mt-2 text-sm sm:text-base text-gray-700">
+            Lets build something together.
           </p>
 
-          <div className="mt-6 grid gap-8 md:grid-cols-2">
+          <div className="mt-6 grid gap-6 sm:gap-8 md:grid-cols-2">
             <div className={card}>
               <h3 className={cardTitle}>Details</h3>
-              <ul className="mt-2 space-y-2 text-sm text-gray-700">
-                <li>
+              <ul className="mt-2 space-y-2 text-xs sm:text-sm text-gray-700">
+                <li className="break-words">
                   Email:{" "}
                   <a className="text-indigo-600 hover:underline" href="mailto:fasiehk@proton.me">
                     fasiehk@proton.me
@@ -731,16 +760,16 @@ export default function Page() {
                     +92 300 3527066
                   </a>
                 </li>
-                <li>
+                <li className="break-words">
                   Telegram:{" "}
                   <a className="text-indigo-600 hover:underline" href="https://t.me/fasiehk" target="_blank">
                     @fasiehk
                   </a>
                 </li>
-                <li className="flex gap-3 pt-1">
-                  <a href="https://github.com/" target="_blank" className="hover:text-gray-900">GitHub</a>
-                  <a href="https://www.linkedin.com/" target="_blank" className="hover:text-gray-900">LinkedIn</a>
-                  <a href="https://www.instagram.com/" target="_blank" className="hover:text-gray-900">Instagram</a>
+                <li className="flex flex-wrap gap-3 pt-1">
+                  <a href="https://github.com/" target="_blank" className="hover:text-gray-900 touch-manipulation">GitHub</a>
+                  <a href="https://www.linkedin.com/" target="_blank" className="hover:text-gray-900 touch-manipulation">LinkedIn</a>
+                  <a href="https://www.instagram.com/" target="_blank" className="hover:text-gray-900 touch-manipulation">Instagram</a>
                 </li>
               </ul>
             </div>
@@ -753,12 +782,12 @@ export default function Page() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white px-4 py-6 text-center text-sm text-gray-600">
+      <footer className="border-t border-gray-200 bg-white px-4 py-6 text-center text-xs sm:text-sm text-gray-600">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
           <span>© {year} Hafiz M Fasieh</span>
           <div className="flex items-center gap-4">
-            <a href="#home" className="hover:text-gray-900">Home</a>
-            <a href="#contact" className="hover:text-gray-900">Contact</a>
+            <a href="#home" className="hover:text-gray-900 min-h-[44px] flex items-center touch-manipulation">Home</a>
+            <a href="#contact" className="hover:text-gray-900 min-h-[44px] flex items-center touch-manipulation">Contact</a>
           </div>
         </div>
       </footer>
