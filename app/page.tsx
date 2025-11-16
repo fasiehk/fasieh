@@ -1,37 +1,47 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import ContactForm from "./components/ContactForm";
-
-// Favicon & PWA metadata (paste your generated links/paths)
-export const metadata: Metadata = {
-  title: "Hafiz M Fasieh",
-  icons: {
-    icon: [
-      // Browser tab icons
-      { url: "https://i.postimg.cc/jSZ3qMVM/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "https://i.postimg.cc/jSZ3qMVM/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "https://i.postimg.cc/jSZ3qMVM/favicon.ico" },
-    ],
-    // iOS home screen icon
-    apple: [{ url: "https://i.postimg.cc/jSZ3qMVM/favicon-32x32.png", sizes: "180x180", type: "image/png" }],
-    // Optional extras (remove if you don't have them)
-    shortcut: ["PASTE_FAVICON_ICO"],
-    other: [{ rel: "mask-icon", url: "PASTE_SAFARI_PINNED_TAB_SVG", color: "#5bbad5" }],
-  },
-  manifest: "PASTE_SITE_WEBMANIFEST_URL", // optional; remove if not used
-  themeColor: "#ffffff",
-};
-
-// Ensure proper scaling on mobile devices
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-};
+import { useEffect } from "react";
 
 export default function Page() {
   const year = new Date().getFullYear();
+
+  // Scroll reveal observer
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll(".scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale");
+    revealElements.forEach((el) => observer.observe(el));
+
+    // Parallax effect
+    const handleScroll = () => {
+      const scrolled = window.pageYOffset;
+      const parallaxElements = document.querySelectorAll(".parallax-slow");
+      parallaxElements.forEach((el) => {
+        const speed = 0.5;
+        (el as HTMLElement).style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // Refined, light-only design tokens with professional spacing and micro-interactions.
   const navLink =
@@ -54,7 +64,7 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 antialiased scroll-smooth selection:bg-indigo-600/10 selection:text-indigo-900">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-sm transition-shadow">
+      <header className="sticky top-0 z-40 border-b border-gray-200 glass shadow-sm transition-shadow">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-2 min-h-[44px]">
             {/* Replace the SVG badge with your picture (square image recommended) */}
@@ -130,9 +140,9 @@ export default function Page() {
           </div>
 
           <div className="grid items-center gap-8 md:grid-cols-2">
-            <div className="order-2 md:order-1">
+            <div className="order-2 md:order-1 scroll-reveal-left">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
-                <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+                <span className="gradient-text">
                   Hafiz M Fasieh — Full‑Stack & Mobile Developer
                 </span>
               </h1>
@@ -145,14 +155,13 @@ export default function Page() {
                 <a href="#contact" className={ctaSecondary}>Contact Me</a>
               </div>
             </div>
-            <div className="flex justify-center md:justify-end order-1 md:order-2">
-              {/* Subtle gradient accent behind avatar for depth */}
-              <div className="relative">
-                <div aria-hidden className="pointer-events-none absolute -inset-4 sm:-inset-6 -z-10 rounded-3xl bg-gradient-to-tr from-indigo-100 via-white to-fuchsia-100 blur-xl" />
+            <div className="flex justify-center md:justify-end order-1 md:order-2 scroll-reveal-right">
+              <div className="relative float-animation">
+                <div aria-hidden className="pointer-events-none absolute -inset-4 sm:-inset-6 -z-10 rounded-3xl bg-gradient-to-tr from-indigo-100 via-white to-fuchsia-100 blur-xl glow-on-hover" />
                 <img
                   src="https://i.postimg.cc/65F8BpWT/1758704032760.jpg"
                   alt="Hafiz M Fasieh"
-                  className="w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 rounded-2xl object-cover ring-1 ring-gray-200 shadow-md"
+                  className="w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 rounded-2xl object-cover ring-1 ring-gray-200 shadow-md hover:ring-indigo-300 transition-all duration-300"
                 />
               </div>
             </div>
@@ -282,14 +291,14 @@ export default function Page() {
           id="about"
           className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-xl sm:text-2xl font-bold">About Me</h2>
-          <p className="mt-3 max-w-3xl text-sm sm:text-base text-gray-700 leading-relaxed">
+          <h2 className="text-xl sm:text-2xl font-bold scroll-reveal">About Me</h2>
+          <p className="mt-3 max-w-3xl text-sm sm:text-base text-gray-700 leading-relaxed scroll-reveal">
             I&#39;m a full‑stack and mobile developer focused on crafting reliable, scalable,
             and well‑designed products. I enjoy shipping end‑to‑end features, from clean
             APIs to polished UIs.
           </p>
           <div className="mt-6 grid gap-4 sm:gap-6 md:grid-cols-2">
-            <div className={card}>
+            <div className={`${card} hover-lift scroll-reveal-scale`}>
               <h3 className={cardTitle}>Education</h3>
               <div className="space-y-3">
                 <div>
@@ -304,7 +313,7 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div className={card}>
+            <div className={`${card} hover-lift scroll-reveal-scale`}>
               <h3 className={cardTitle}>Expertise</h3>
               <p className={cardText}>
                 Web apps, mobile apps, backend APIs, databases, performance, and DX.
@@ -313,19 +322,19 @@ export default function Page() {
           </div>
 
           {/* Tools & Tech */}
-          <div className="mt-8">
+          <div className="mt-8 scroll-reveal">
             <h3 className="text-base font-semibold">Tools & Technologies</h3>
             <div className="mt-3 flex flex-wrap -mr-1.5">
-              <span className={pill}>Next.js</span>
-              <span className={pill}>React</span>
-              <span className={pill}>Flutter</span>
-              <span className={pill}>Firebase</span>
-              <span className={pill}>Prisma</span>
-              <span className={pill}>PostgreSQL</span>
-              <span className={pill}>Flask</span>
-              <span className={pill}>Tailwind</span>
-              <span className={pill}>TypeScript</span>
-              <span className={pill}>Git</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>Next.js</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>React</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>Flutter</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>Firebase</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>Prisma</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>PostgreSQL</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>Flask</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>Tailwind</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>TypeScript</span>
+              <span className={`${pill} stagger-item hover:scale-110 hover:bg-indigo-100 hover:border-indigo-300 transition-all cursor-default`}>Git</span>
             </div>
             <div className="mt-4">
               <a href="/resume.pdf" className={`${ctaSecondary} w-full sm:w-auto`}>Download Resume (PDF)</a>
@@ -338,21 +347,22 @@ export default function Page() {
           id="projects"
           className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2">
+          <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 scroll-reveal">
             <h2 className="text-xl sm:text-2xl font-bold">Projects</h2>
             <span className="text-xs sm:text-sm text-gray-500">Featured work</span>
           </div>
 
           <div className="grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {/* Mobile App Developer — Smart Library */}
-            <div className={`${card} ${cardBevel}`}>
-              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]">
+            <div className={`${card} ${cardBevel} hover-lift scroll-reveal-scale group`}>
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 relative">
                 <img 
                   src="https://i.postimg.cc/NjHLBt3n/Untitled-design-2.png"
                   alt="Smart Library"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               <h3 className={`${cardTitle} mt-4`}>Mobile App Developer — Smart Library</h3>
               <p className={cardText}>Flutter app for exploring and saving books with a calm, elegant UI.</p>
@@ -373,8 +383,8 @@ export default function Page() {
             </div>
 
             {/* Mobile Developer — Flutter Chat App */}
-            <div className={`${card} ${cardBevel}`}>
-              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+            <div className={`${card} ${cardBevel} hover-lift scroll-reveal-scale group`}>
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gradient-to-br from-indigo-100 to-purple-100 relative group-hover:shadow-lg transition-shadow duration-300" />
               <h3 className={`${cardTitle} mt-4`}>Mobile Developer — Flutter Chat App</h3>
               <p className={cardText}>Real-time chat with clean, minimal UI and one-on-one messaging.</p>
               <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
@@ -393,8 +403,8 @@ export default function Page() {
             </div>
 
             {/* Python Developer — URL Link Shortener */}
-            <div className={card}>
-              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+            <div className={`${card} hover-lift scroll-reveal-scale group`}>
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gradient-to-br from-emerald-100 to-teal-100 relative group-hover:shadow-lg transition-shadow duration-300" />
               <h3 className={`${cardTitle} mt-4`}>Python Developer — URL Link Shortener</h3>
               <p className={cardText}>Flask-based URL shortening service with custom short codes and analytics.</p>
               <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
@@ -415,14 +425,15 @@ export default function Page() {
             </div>
 
             {/* Full-Stack Developer — Online Course Platform */}
-            <div className={card}>
-              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]">
+            <div className={`${card} hover-lift scroll-reveal-scale group`}>
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 relative">
                 <img 
                   src="https://i.postimg.cc/CLtRf7bx/Screenshot-2025-10-15-124324.png" 
                   alt="Online Course Platform"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               <h3 className={`${cardTitle} mt-4`}>Full-Stack Developer — Online Course Platform</h3>
               <p className={cardText}>Next.js + Prisma + PostgreSQL + JWT. Scalable LMS with role-based auth.</p>
@@ -447,8 +458,8 @@ export default function Page() {
             </div>
 
             {/* Java Developer — Crypto Trading Console App */}
-            <div className={card}>
-              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+            <div className={`${card} hover-lift scroll-reveal-scale group`}>
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gradient-to-br from-amber-100 to-orange-100 relative group-hover:shadow-lg transition-shadow duration-300" />
               <h3 className={`${cardTitle} mt-4`}>Java Developer — Crypto Trading Console App</h3>
               <p className={cardText}>OOP-focused trading simulation demonstrating solid design.</p>
               <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
@@ -465,8 +476,8 @@ export default function Page() {
             </div>
 
             {/* Frontend Developer — Portfolio & Personal Projects */}
-            <div className={`${card} ${cardBevel}`}>
-              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gray-100 transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+            <div className={`${card} ${cardBevel} hover-lift scroll-reveal-scale group`}>
+              <div className="aspect-video w-full overflow-hidden rounded-[16px] sm:rounded-[20px] bg-gradient-to-br from-violet-100 to-fuchsia-100 relative group-hover:shadow-lg transition-shadow duration-300" />
               <h3 className={`${cardTitle} mt-4`}>Frontend Developer — Portfolio & Personal Projects</h3>
               <p className={cardText}>Polished portfolio with smooth scroll animations and reusable components.</p>
               <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
@@ -490,9 +501,9 @@ export default function Page() {
           id="experience"
           className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-xl sm:text-2xl font-bold">Experience / Agency</h2>
+          <h2 className="text-xl sm:text-2xl font-bold scroll-reveal">Experience / Agency</h2>
 
-          <div className={`${card} mt-4`}>
+          <div className={`${card} mt-4 hover-lift scroll-reveal-scale`}>
             <h3 className={cardTitle}>Founder & Lead Developer — CubixByte</h3>
             <p className={cardText}>Web & App Development Solutions</p>
             <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
@@ -511,7 +522,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className={`${card} mt-4`}>
+          <div className={`${card} mt-4 hover-lift scroll-reveal-scale`}>
             <h3 className={cardTitle}>Additional Academic Projects</h3>
             <ul className="mt-2 list-disc space-y-1 pl-4 sm:pl-5 text-xs sm:text-sm text-gray-600">
               <li>Flask mini projects: routing, forms, and API handling</li>
@@ -525,11 +536,11 @@ export default function Page() {
           id="skills"
           className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-xl sm:text-2xl font-bold mb-6">Skills & Expertise</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-6 scroll-reveal">Skills & Expertise</h2>
           
           <div className="grid gap-4 sm:gap-5 lg:grid-cols-3">
             {/* Frontend Development */}
-            <div className="rounded-xl sm:rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-white p-4 sm:p-6">
+            <div className="rounded-xl sm:rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-white p-4 sm:p-6 hover-lift scroll-reveal-scale">
               <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                 <div className="rounded-lg bg-indigo-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -549,7 +560,7 @@ export default function Page() {
                     <span className="text-gray-500">90%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" />
+                    <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 progress-bar-animated" />
                   </div>
                 </div>
                 <div>
@@ -558,7 +569,7 @@ export default function Page() {
                     <span className="text-gray-500">70%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[70%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" />
+                    <div className="h-full w-[70%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 progress-bar-animated" style={{ animationDelay: "0.2s" }} />
                   </div>
                 </div>
                 <div>
@@ -567,7 +578,7 @@ export default function Page() {
                     <span className="text-gray-500">90%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" />
+                    <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 progress-bar-animated" style={{ animationDelay: "0.4s" }} />
                   </div>
                 </div>
                 <div>
@@ -576,14 +587,14 @@ export default function Page() {
                     <span className="text-gray-500">80%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[80%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-500" />
+                    <div className="h-full w-[80%] rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 progress-bar-animated" style={{ animationDelay: "0.6s" }} />
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Mobile Development */}
-            <div className="rounded-xl sm:rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50/50 to-white p-4 sm:p-6">
+            <div className="rounded-xl sm:rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50/50 to-white p-4 sm:p-6 hover-lift scroll-reveal-scale">
               <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                 <div className="rounded-lg bg-emerald-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -603,7 +614,7 @@ export default function Page() {
                     <span className="text-gray-500">85%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[85%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-500" />
+                    <div className="h-full w-[85%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 progress-bar-animated" />
                   </div>
                 </div>
                 <div>
@@ -612,7 +623,7 @@ export default function Page() {
                     <span className="text-gray-500">80%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[80%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-500" />
+                    <div className="h-full w-[80%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 progress-bar-animated" style={{ animationDelay: "0.2s" }} />
                   </div>
                 </div>
                 <div>
@@ -621,14 +632,14 @@ export default function Page() {
                     <span className="text-gray-500">70%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[70%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-500" />
+                    <div className="h-full w-[70%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 progress-bar-animated" style={{ animationDelay: "0.4s" }} />
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Backend & Database */}
-            <div className="rounded-xl sm:rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50/50 to-white p-4 sm:p-6">
+            <div className="rounded-xl sm:rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50/50 to-white p-4 sm:p-6 hover-lift scroll-reveal-scale">
               <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                 <div className="rounded-lg bg-violet-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -648,7 +659,7 @@ export default function Page() {
                     <span className="text-gray-500">90%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 transition-all duration-500" />
+                    <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 progress-bar-animated" />
                   </div>
                 </div>
                 <div>
@@ -657,7 +668,7 @@ export default function Page() {
                     <span className="text-gray-500">75%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[75%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 transition-all duration-500" />
+                    <div className="h-full w-[75%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 progress-bar-animated" style={{ animationDelay: "0.2s" }} />
                   </div>
                 </div>
                 <div>
@@ -666,7 +677,7 @@ export default function Page() {
                     <span className="text-gray-500">70%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[70%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 transition-all duration-500" />
+                    <div className="h-full w-[70%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 progress-bar-animated" style={{ animationDelay: "0.4s" }} />
                   </div>
                 </div>
                 <div>
@@ -675,14 +686,14 @@ export default function Page() {
                     <span className="text-gray-500">75%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-                    <div className="h-full w-[75%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 transition-all duration-500" />
+                    <div className="h-full w-[75%] rounded-full bg-gradient-to-r from-violet-500 to-violet-600 progress-bar-animated" style={{ animationDelay: "0.6s" }} />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Tools & Collaboration - spans full width on its own row */}
-            <div className="rounded-xl sm:rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/50 to-white p-4 sm:p-6 lg:col-span-3">
+            {/* Tools & Collaboration */}
+            <div className="rounded-xl sm:rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/50 to-white p-4 sm:p-6 lg:col-span-3 hover-lift scroll-reveal">
               <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                 <div className="rounded-lg bg-amber-100 p-2 flex-shrink-0">
                   <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -696,19 +707,19 @@ export default function Page() {
                 <span className="hidden sm:inline text-xs font-medium text-amber-600 whitespace-nowrap">Essential skills</span>
               </div>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
+                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 hover:border-amber-300 hover:bg-amber-50 transition-all cursor-default">
                   <div className="h-2 w-2 rounded-full bg-amber-500" />
                   <span className="text-sm font-medium text-gray-700">Git / GitHub</span>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
+                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 hover:border-amber-300 hover:bg-amber-50 transition-all cursor-default">
                   <div className="h-2 w-2 rounded-full bg-amber-500" />
                   <span className="text-sm font-medium text-gray-700">Communication</span>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
+                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 hover:border-amber-300 hover:bg-amber-50 transition-all cursor-default">
                   <div className="h-2 w-2 rounded-full bg-amber-500" />
                   <span className="text-sm font-medium text-gray-700">Leadership</span>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
+                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 hover:border-amber-300 hover:bg-amber-50 transition-all cursor-default">
                   <div className="h-2 w-2 rounded-full bg-amber-500" />
                   <span className="text-sm font-medium text-gray-700">Problem Solving</span>
                 </div>
@@ -722,9 +733,9 @@ export default function Page() {
           id="certifications"
           className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-xl sm:text-2xl font-bold">Certifications</h2>
+          <h2 className="text-xl sm:text-2xl font-bold scroll-reveal">Certifications</h2>
           <div className="mt-4 grid gap-4 sm:gap-5 sm:grid-cols-2">
-            <div className={card}>
+            <div className={`${card} hover-lift scroll-reveal-scale`}>
               <h3 className={cardTitle}>SQL Fundamentals Certificate</h3>
               <p className={cardText}>SoloLearn</p>
               <p className="mt-2 text-sm text-gray-600">
@@ -739,13 +750,13 @@ export default function Page() {
           id="contact"
           className="mx-auto max-w-7xl px-4 py-12 sm:px-6 scroll-mt-16"
         >
-          <h2 className="text-xl sm:text-2xl font-bold">Contact</h2>
-          <p className="mt-2 text-sm sm:text-base text-gray-700">
+          <h2 className="text-xl sm:text-2xl font-bold scroll-reveal">Contact</h2>
+          <p className="mt-2 text-sm sm:text-base text-gray-700 scroll-reveal">
             Lets build something together.
           </p>
 
           <div className="mt-6 grid gap-6 sm:gap-8 md:grid-cols-2">
-            <div className={card}>
+            <div className={`${card} hover-lift scroll-reveal-left`}>
               <h3 className={cardTitle}>Details</h3>
               <ul className="mt-2 space-y-2 text-xs sm:text-sm text-gray-700">
                 <li className="break-words">
@@ -774,15 +785,15 @@ export default function Page() {
               </ul>
             </div>
 
-            {/* Simple email form without backend */}
-            {/* Replace the mailto form with the API-backed form */}
-            <ContactForm card={card} cardTitle={cardTitle} ctaPrimary={ctaPrimary} />
+            <div className="scroll-reveal-right">
+              <ContactForm card={card} cardTitle={cardTitle} ctaPrimary={ctaPrimary} />
+            </div>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white px-4 py-6 text-center text-xs sm:text-sm text-gray-600">
+      <footer className="border-t border-gray-200 glass px-4 py-6 text-center text-xs sm:text-sm text-gray-600">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
           <span>© {year} Hafiz M Fasieh</span>
           <div className="flex items-center gap-4">
